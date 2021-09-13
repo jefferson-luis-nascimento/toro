@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TrendContext.Domain.Entities;
 using TrendContext.Domain.Repository.Implementations;
@@ -31,6 +33,9 @@ namespace TrendContext.WebApi
         {
             services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            var assembly = AppDomain.CurrentDomain.Load("TrendContext.Domain");
+            services.AddMediatR(assembly);
 
             services.AddControllers();
         }

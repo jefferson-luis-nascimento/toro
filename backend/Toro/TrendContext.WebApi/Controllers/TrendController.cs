@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrendContext.Domain.Commands.Requests;
+using TrendContext.Domain.Commands.Responses;
 using TrendContext.Domain.Entities;
 using TrendContext.Shared.Repository;
 
@@ -21,11 +24,11 @@ namespace TrendContext.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Trend>> Get([FromServices] IRepository<Trend> repository)
+        public Task<IEnumerable<GetAllTrendResponse>> Get([FromServices] IMediator mediator)
         {
+            var result = mediator.Send(new GetAllTrendRequest());
 
-            return await repository.GetAllAsync();
-
+            return result;
         }
     }
 }
