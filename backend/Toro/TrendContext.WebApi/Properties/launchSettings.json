@@ -12,7 +12,6 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "trends",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +19,6 @@
     "TrendContext.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "trends",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

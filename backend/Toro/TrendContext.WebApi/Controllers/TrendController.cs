@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using TrendContext.Domain.Commands.Responses;
 namespace TrendContext.WebApi.Controllers
 {
     [ApiController]
-    [Route("trends")]
+    [Route("api/v1/trends")]
     public class TrendController : ControllerBase
     {
         private readonly ILogger<TrendController> _logger;
@@ -19,21 +20,46 @@ namespace TrendContext.WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// List of trends
+        /// </summary>
+        /// <param name="mediator"></param>
+        /// <returns></returns>
         [HttpGet]
-        public Task<IEnumerable<GetAllTrendResponse>> Get([FromServices] IMediator mediator)
+        [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllTrendResponse>))]
+        public async Task<IActionResult> GetAllAsync([FromServices] IMediator mediator)
         {
-            var result = mediator.Send(new GetAllTrendRequest());
+            var result = await mediator.Send(new GetAllTrendRequest());
 
-            return result;
+            return Ok(result);
         }
 
+        /// <summary>
+        /// Creates a new Trend.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/v1/trends
+        ///     {
+        ///        "symbol": "PETR3",
+        ///        "currentPrice": 31.28
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="mediator"></param>
+        /// <param name="command"></param>
+        /// <returns>A newly created TodoItem</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
         [HttpPost]
-        public async Task<CreateTrendResponse> Post([FromServices] IMediator mediator,
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateAsync([FromServices] IMediator mediator,
                                                     [FromBody] CreateTrendRequest command)
         {
             var result = await mediator.Send(command);
-
-            return result;
+            return Created("", result);
         }
     }
 }
