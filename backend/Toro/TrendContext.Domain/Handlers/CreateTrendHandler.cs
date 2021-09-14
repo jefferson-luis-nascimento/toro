@@ -1,21 +1,17 @@
-﻿using MediatR;
+﻿using Flunt.Notifications;
+using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TrendContext.Domain.Commands.Requests;
 using TrendContext.Domain.Commands.Responses;
 using TrendContext.Domain.Data.Interfaces;
 using TrendContext.Domain.Entities;
-using TrendContext.Domain.Repository.Implementations;
 using TrendContext.Domain.Repository.Interfaces;
-using TrendContext.Shared.Repository;
 
 namespace TrendContext.Domain.Handlers
 {
-    public class CreateTrendHandler : IRequestHandler<CreateTrendRequest, CreateTrendResponse>
+    public class CreateTrendHandler : Notifiable<Notification>, IRequestHandler<CreateTrendRequest, CreateTrendResponse>
     {
         private readonly ITrendRepository repository;
         private readonly IUnitOfWork unitOfWork;
@@ -30,6 +26,14 @@ namespace TrendContext.Domain.Handlers
         {
             try
             {
+                request.Validate();
+
+                if(!request.IsValid)
+                {
+                    AddNotifications(request);
+                    return null;
+                }
+
                 var existTrend = await repository.GetBySymbol(request.Symbol);
 
                 if (existTrend != null)

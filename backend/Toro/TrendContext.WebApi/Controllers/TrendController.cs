@@ -24,7 +24,9 @@ namespace TrendContext.WebApi.Controllers
         /// List of trends
         /// </summary>
         /// <param name="mediator"></param>
-        /// <returns></returns>
+        /// <returns>List of trends</returns>
+        /// <response code="200">Returns the newly created item</response>
+        /// <response code="500">If has error on server</response> 
         [HttpGet]
         [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllTrendResponse>))]
         public async Task<IActionResult> GetAllAsync([FromServices] IMediator mediator)
@@ -49,9 +51,10 @@ namespace TrendContext.WebApi.Controllers
         /// </remarks>
         /// <param name="mediator"></param>
         /// <param name="command"></param>
-        /// <returns>A newly created TodoItem</returns>
+        /// <returns>A newly created trend</returns>
         /// <response code="201">Returns the newly created item</response>
         /// <response code="400">If the item is null</response> 
+        /// <response code="500">If has error on server</response> 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,6 +62,10 @@ namespace TrendContext.WebApi.Controllers
                                                     [FromBody] CreateTrendRequest command)
         {
             var result = await mediator.Send(command);
+
+            if (result == null)
+                return BadRequest(command.Notifications);
+
             return Created("", result);
         }
     }

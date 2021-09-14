@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrendContext.Shared.Entities
 {
     public abstract class Entity
     {
+        [Key]
         public Guid Id { get; set; }
         public DateTime CreatedIn { get; set; }
         public DateTime? UpdatedIn { get; set; }
