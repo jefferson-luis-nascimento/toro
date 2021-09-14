@@ -13,8 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using TrendContext.Domain.Data;
+using TrendContext.Domain.Data.Interfaces;
 using TrendContext.Domain.Entities;
 using TrendContext.Domain.Repository.Implementations;
+using TrendContext.Domain.Repository.Interfaces;
 using TrendContext.Shared.Repository;
 
 namespace TrendContext.WebApi
@@ -32,7 +35,9 @@ namespace TrendContext.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<ITrendRepository, TrendRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             var assembly = AppDomain.CurrentDomain.Load("TrendContext.Domain");
             services.AddMediatR(assembly);
@@ -54,7 +59,7 @@ namespace TrendContext.WebApi
 
             using (var context = new InMemoryAppContext(options))
             {
-                AdicionarDadosTeste(context);
+                AddDefaultData(context);
             }          
 
             app.UseHttpsRedirection();
@@ -69,7 +74,7 @@ namespace TrendContext.WebApi
             });
         }
 
-        private static void AdicionarDadosTeste(InMemoryAppContext context)
+        private static void AddDefaultData(InMemoryAppContext context)
         {
             var rebeca = new User
             {

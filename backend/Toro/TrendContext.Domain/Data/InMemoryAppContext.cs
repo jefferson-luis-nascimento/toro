@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrendContext.Domain.Entities;
 
-namespace TrendContext.Domain.Repository.Implementations
+namespace TrendContext.Domain.Data
 {
     public class InMemoryAppContext : DbContext
     {

@@ -1,14 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TrendContext.Domain.Commands.Requests;
 using TrendContext.Domain.Commands.Responses;
-using TrendContext.Domain.Entities;
-using TrendContext.Shared.Repository;
 
 namespace TrendContext.WebApi.Controllers
 {
@@ -27,6 +23,15 @@ namespace TrendContext.WebApi.Controllers
         public Task<IEnumerable<GetAllTrendResponse>> Get([FromServices] IMediator mediator)
         {
             var result = mediator.Send(new GetAllTrendRequest());
+
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<CreateTrendResponse> Post([FromServices] IMediator mediator,
+                                                    [FromBody] CreateTrendRequest command)
+        {
+            var result = await mediator.Send(command);
 
             return result;
         }

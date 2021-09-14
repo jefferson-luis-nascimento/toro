@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TrendContext.Domain.Data;
 using TrendContext.Shared.Entities;
 using TrendContext.Shared.Repository;
 
