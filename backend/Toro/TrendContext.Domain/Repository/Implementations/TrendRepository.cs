@@ -8,8 +8,8 @@ namespace TrendContext.Domain.Repository.Implementations
 {
     public class TrendRepository : Repository<Trend>, ITrendRepository
     {
-        public TrendRepository(IDbContextFactory<InMemoryAppContext> contextFactory) 
-            : base (contextFactory)
+        public TrendRepository(InMemoryAppContext appContext) 
+            : base (appContext)
         {
 
         }

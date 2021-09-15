@@ -37,19 +37,18 @@ namespace TrendContext.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextFactory<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
+            services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
 
-            //services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<ITrendRepository, TrendRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            var assembly = AppDomain.CurrentDomain.Load("TrendContext.Domain");
-            services.AddMediatR(assembly);
+            services.AddMediatR(AppDomain.CurrentDomain.Load("TrendContext.Domain"));
 
             services.AddControllers();
 
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
@@ -77,12 +76,7 @@ namespace TrendContext.WebApi
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-                app.UseExceptionHandler("/error-local-development");
-            }
-            else
-            {
-                app.UseExceptionHandler("/error");
+                app.UseDeveloperExceptionPage();
             }
 
             var options = new DbContextOptionsBuilder<InMemoryAppContext>()
@@ -92,7 +86,7 @@ namespace TrendContext.WebApi
             using (var context = new InMemoryAppContext(options))
             {
                 AddDefaultData(context);
-            }          
+            }
 
             app.UseHttpsRedirection();
 
@@ -100,7 +94,8 @@ namespace TrendContext.WebApi
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Trends API v1");
             });
 

@@ -15,6 +15,7 @@ namespace TrendContext.Domain.Data
 
         public void BeginTransaction()
         {
+            // Method intentionally left empty.
         }
 
         public async Task Commit()
@@ -24,6 +25,7 @@ namespace TrendContext.Domain.Data
 
         public void Rollback()
         {
+            // Method intentionally left empty.
         }
     }
 }
