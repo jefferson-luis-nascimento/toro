@@ -7,7 +7,7 @@ using TrendContext.Shared.Commands;
 
 namespace TrendContext.Domain.Commands.Requests
 {
-    public class CreateTrendRequest : Notifiable<Notification>, IRequest<CreateTrendResponse>, ICommand
+    public class CreateTrendRequest : Notifiable<Notification>, IRequest<CommandResponse<CreateTrendResponse>>, ICommand
     {
         [JsonProperty("symbol")]
         public string Symbol { get; set; }

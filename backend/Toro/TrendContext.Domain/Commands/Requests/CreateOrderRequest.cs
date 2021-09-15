@@ -8,7 +8,7 @@ using TrendContext.Shared.Commands;
 
 namespace TrendContext.Domain.Commands.Requests
 {
-    public class CreateOrderRequest : Notifiable<Notification>, IRequest<CreateOrderResponse>, ICommand
+    public class CreateOrderRequest : Notifiable<Notification>, IRequest<CommandResponse<CreateOrderResponse>>, ICommand
     {
         [JsonProperty("userId")]
         public Guid UserId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Flunt.Notifications;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,18 +12,22 @@ using TrendContext.Domain.Repository.Interfaces;
 
 namespace TrendContext.Domain.Handlers
 {
-    public class CreateTrendHandler : Notifiable<Notification>, IRequestHandler<CreateTrendRequest, CreateTrendResponse>
+    public class CreateTrendHandler : Notifiable<Notification>, IRequestHandler<CreateTrendRequest, CommandResponse<CreateTrendResponse>>
     {
         private readonly ITrendRepository repository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogger<CreateTrendHandler> logger;
 
-        public CreateTrendHandler(ITrendRepository repository, IUnitOfWork unitOfWork)
+        public CreateTrendHandler(ITrendRepository repository, 
+            IUnitOfWork unitOfWork,
+            ILogger<CreateTrendHandler> logger)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
-        public async Task<CreateTrendResponse> Handle(CreateTrendRequest request, CancellationToken cancellationToken)
+        public async Task<CommandResponse<CreateTrendResponse>> Handle(CreateTrendRequest request, CancellationToken cancellationToken)
         {
             try
             {
@@ -30,16 +35,14 @@ namespace TrendContext.Domain.Handlers
 
                 if(!request.IsValid)
                 {
-                    AddNotifications(request);
-                    return null;
+                    return new CommandResponse<CreateTrendResponse>(false, 400, string.Join("\n", request.Notifications), null);
                 }
 
                 var existTrend = await repository.GetBySymbol(request.Symbol);
 
                 if (existTrend != null)
                 {
-                    request.AddNotification("Symbol", "Already exists this Symbol.");
-                    return null;
+                    return new CommandResponse<CreateTrendResponse>(false, 400, "Already exists this Trend.", null);
                 }
 
                 var trend = new Trend
@@ -51,17 +54,19 @@ namespace TrendContext.Domain.Handlers
                 repository.Create(trend);
                 unitOfWork.Commit();
 
-                return new CreateTrendResponse
-                {
-                    Id = trend.Id,
-                    Symbol = trend.Symbol,
-                    CurrentPrice = trend.CurrentPrice,
-                };
+                return new CommandResponse<CreateTrendResponse>(true, 201, string.Empty,
+                    new CreateTrendResponse
+                    {
+                        Id = trend.Id,
+                        Symbol = trend.Symbol,
+                        CurrentPrice = trend.CurrentPrice,
+                    });
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, ex.Message);
                 unitOfWork.Rollback();
-                return null;
+                return new CommandResponse<CreateTrendResponse>(false, 500, "Internal Server Error", null);
             }
         }
     }

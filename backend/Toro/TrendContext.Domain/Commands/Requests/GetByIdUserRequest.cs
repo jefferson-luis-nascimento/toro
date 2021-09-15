@@ -5,7 +5,8 @@ using TrendContext.Domain.Commands.Responses;
 
 namespace TrendContext.Domain.Commands.Requests
 {
-    public class GetAllUsersRequest : IRequest<CommandResponse<IEnumerable<GetAllUsersResponse>>>
+    public class GetByIdUserRequest : IRequest<CommandResponse<GetByIdUserResponse>>
     {
+        public Guid Id { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Flunt.Notifications;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,59 +13,57 @@ using TrendContext.Shared.Repository;
 
 namespace TrendContext.Domain.Handlers
 {
-    public class CreateOrderHandler : Notifiable<Notification>, IRequestHandler<CreateOrderRequest, CreateOrderResponse>
+    public class CreateOrderHandler : Notifiable<Notification>, IRequestHandler<CreateOrderRequest, CommandResponse<CreateOrderResponse>>
     {
         private readonly IRepository<Order> orderRepository;
         private readonly ITrendRepository trendRepository;
         private readonly IRepository<User> userRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogger<CreateOrderHandler> logger;
 
         public CreateOrderHandler(IRepository<Order> orderRepository,
             ITrendRepository trendRepository,
             IRepository<User> userRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILogger<CreateOrderHandler> logger)
         {
             this.orderRepository = orderRepository;
             this.trendRepository = trendRepository;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
-        public async Task<CreateOrderResponse> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
+        public async Task<CommandResponse<CreateOrderResponse>> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
         {
             try
             {
                 request.Validate();
 
-                if(!request.IsValid)
+                if (!request.IsValid)
                 {
-                    request.AddNotifications(request);
-                    return null;
+                    return new CommandResponse<CreateOrderResponse>(false, 400, string.Join("\n", request.Notifications), null);
                 }
 
                 var existingTrend = await trendRepository.GetBySymbol(request.Symbol);
 
                 if (existingTrend == null)
                 {
-                    request.AddNotification("Symbol", "Symbol not found.");
-                    return null;
+                    return new CommandResponse<CreateOrderResponse>(false, 404, "Trend not found.", null);
                 }
 
                 var existingUser = await userRepository.GetByIdAsync(request.UserId);
 
-                if(existingUser == null)
+                if (existingUser == null)
                 {
-                    request.AddNotification("UserId", "User not found.");
+                    return new CommandResponse<CreateOrderResponse>(false, 404, "User not found.", null);
                 }
 
-                if(existingTrend.CurrentPrice * request.Amount > existingUser.CheckingAccountAmount)
-                {
-                    request.AddNotification("Amount", "Insufficient funds.");
-                }
+                var totalOrder = Math.Round(existingTrend.CurrentPrice * request.Amount, 2, MidpointRounding.AwayFromZero);
 
-                if (!request.IsValid)
+                if (totalOrder > existingUser.CheckingAccountAmount)
                 {
-                    return null;
+                    return new CommandResponse<CreateOrderResponse>(false, 400, "Insufficient funds.", null);
                 }
 
                 var order = new Order
@@ -75,19 +74,25 @@ namespace TrendContext.Domain.Handlers
                 };
 
                 orderRepository.Create(order);
+
+                existingUser.CheckingAccountAmount -= totalOrder;
+                await userRepository.UpdateAsync(existingUser);
+
                 unitOfWork.Commit();
 
-                return new CreateOrderResponse
-                {
-                    Id = order.Id,
-                    Symbol = existingTrend.Symbol,
-                    Amount = order.Amount,
-                };
+                return new CommandResponse<CreateOrderResponse>(true, 201, string.Empty, 
+                    new CreateOrderResponse
+                    {
+                        Id = order.Id,
+                        Symbol = existingTrend.Symbol,
+                        Amount = order.Amount,
+                    });
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, ex.Message);
                 unitOfWork.Rollback();
-                return null;
+                return new CommandResponse<CreateOrderResponse>(false, 500, "Internal Server Error", null);
             }
         }
     }

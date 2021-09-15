@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrendContext.Domain.Commands.Requests;
@@ -29,11 +30,32 @@ namespace TrendContext.WebApi.Controllers
         /// <response code="500">If has error on server</response> 
         [HttpGet]
         [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllUsersResponse>))]
+        [ProducesResponseType((500), Type = typeof(object))]
         public async Task<IActionResult> GetAllAsync([FromServices] IMediator mediator)
         {
             var result = await mediator.Send(new GetAllUsersRequest());
 
-            return Ok(result);
+            return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
+        }
+
+        /// <summary>
+        /// Get one user by id
+        /// </summary>
+        /// <param name="mediator"></param>
+        /// <param name="id"></param>
+        /// <returns>Single user</returns>
+        /// <response code="200">Single User</response>
+        /// <response code="500">If has error on server</response> 
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType((200), Type = typeof(GetAllUsersResponse))]
+        [ProducesResponseType((500), Type = typeof(object))]
+        public async Task<IActionResult> GetByIdAsync([FromServices] IMediator mediator,
+                                                      [FromRoute] Guid id)
+        {
+            var result = await mediator.Send(new GetByIdUserRequest { Id = id});
+
+            return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
         }
     }
 }

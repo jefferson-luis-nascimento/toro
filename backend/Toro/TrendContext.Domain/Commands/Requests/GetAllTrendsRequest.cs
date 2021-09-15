@@ -5,11 +5,8 @@ using TrendContext.Domain.Commands.Responses;
 
 namespace TrendContext.Domain.Commands.Requests
 {
-    public class GetAllTrendsRequest : IRequest<IEnumerable<GetAllTrendsResponse>>
+    public class GetAllTrendsRequest : IRequest<CommandResponse<IEnumerable<GetAllTrendsResponse>>>
     {
-        public void Validate()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

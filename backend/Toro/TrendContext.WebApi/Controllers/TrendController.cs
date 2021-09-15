@@ -33,7 +33,7 @@ namespace TrendContext.WebApi.Controllers
         {
             var result = await mediator.Send(new GetAllTrendsRequest());
 
-            return Ok(result);
+            return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
         }
 
         /// <summary>
@@ -63,10 +63,7 @@ namespace TrendContext.WebApi.Controllers
         {
             var result = await mediator.Send(command);
 
-            if (result == null)
-                return BadRequest(command.Notifications);
-
-            return Created("", result);
+            return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
         }
     }
 }

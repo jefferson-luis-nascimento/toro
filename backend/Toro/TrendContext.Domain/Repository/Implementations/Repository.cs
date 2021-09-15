@@ -23,11 +23,6 @@ namespace TrendContext.Domain.Repository.Implementations
         {
             var existsEntity = await entities.SingleOrDefaultAsync(entity => entity.Id == id);
 
-            if (existsEntity == null)
-            {
-                throw new EntryPointNotFoundException("id");
-            }
-
             return existsEntity;
         }
 
