@@ -41,7 +41,7 @@ namespace TrendContext.Domain.Repository.Implementations
         {
             var existsEntity = await GetByIdAsync(entity.Id);
 
-            existsEntity = entity;
+            appContext.Entry(existsEntity).CurrentValues.SetValues(entity);
         }
 
         public async Task DeleteAsync(Guid id)
