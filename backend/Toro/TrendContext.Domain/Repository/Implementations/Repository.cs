@@ -10,14 +10,13 @@ namespace TrendContext.Domain.Repository.Implementations
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        protected readonly IDbContextFactory<InMemoryAppContext> contextFactory;
         protected readonly InMemoryAppContext appContext;
         protected DbSet<TEntity> entities;
 
-        public Repository(IDbContextFactory<InMemoryAppContext> contextFactory)
+        public Repository(InMemoryAppContext appContext)
         {
-            this.contextFactory = contextFactory;
-            this.appContext = contextFactory.CreateDbContext();
+            this.appContext = appContext;
+
             entities = appContext.Set<TEntity>();
         }
 

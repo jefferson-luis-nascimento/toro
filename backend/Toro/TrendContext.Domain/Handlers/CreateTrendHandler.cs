@@ -54,8 +54,10 @@ namespace TrendContext.Domain.Handlers
                     CurrentPrice = request.CurrentPrice,
                 };
 
+                unitOfWork.BeginTransaction();
+
                 repository.Create(trend);
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new CommandResponse<CreateTrendResponse>(true, 201, string.Empty,
                     new CreateTrendResponse

@@ -76,12 +76,14 @@ namespace TrendContext.Domain.Handlers
                     Amount = request.Amount,
                 };
 
+                unitOfWork.BeginTransaction();
+
                 orderRepository.Create(order);
 
                 existingUser.CheckingAccountAmount -= totalOrder;
                 await userRepository.UpdateAsync(existingUser);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new CommandResponse<CreateOrderResponse>(true, 201, string.Empty, 
                     new CreateOrderResponse

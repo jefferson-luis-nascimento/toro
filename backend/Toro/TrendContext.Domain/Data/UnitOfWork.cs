@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TrendContext.Domain.Data.Interfaces;
 
@@ -10,18 +6,20 @@ namespace TrendContext.Domain.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IDbContextFactory<InMemoryAppContext> contextFactory;
-        private readonly InMemoryAppContext context;
+        private readonly InMemoryAppContext appContext;
 
-        public UnitOfWork(IDbContextFactory<InMemoryAppContext> contextFactory)
+        public UnitOfWork(InMemoryAppContext appContext)
         {
-            this.contextFactory = contextFactory;
-            this.context = contextFactory.CreateDbContext();
+            this.appContext = appContext;
         }
 
-        public void Commit()
+        public void BeginTransaction()
         {
-            context.SaveChangesAsync();
+        }
+
+        public async Task Commit()
+        {
+            await appContext.SaveChangesAsync();
         }
 
         public void Rollback()
