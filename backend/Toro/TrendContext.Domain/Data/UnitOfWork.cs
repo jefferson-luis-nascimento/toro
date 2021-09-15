@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,13 @@ namespace TrendContext.Domain.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private readonly IDbContextFactory<InMemoryAppContext> contextFactory;
         private readonly InMemoryAppContext context;
 
-        public UnitOfWork(InMemoryAppContext context)
+        public UnitOfWork(IDbContextFactory<InMemoryAppContext> contextFactory)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
+            this.context = contextFactory.CreateDbContext();
         }
 
         public void Commit()

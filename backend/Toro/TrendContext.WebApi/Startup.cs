@@ -37,7 +37,9 @@ namespace TrendContext.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
+            services.AddDbContextFactory<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
+
+            //services.AddDbContext<InMemoryAppContext>(opt => opt.UseInMemoryDatabase(databaseName: "TrendContextTest"));
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<ITrendRepository, TrendRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();

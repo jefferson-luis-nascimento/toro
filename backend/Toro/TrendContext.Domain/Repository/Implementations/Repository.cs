@@ -10,13 +10,15 @@ namespace TrendContext.Domain.Repository.Implementations
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        protected readonly InMemoryAppContext _appContext;
+        protected readonly IDbContextFactory<InMemoryAppContext> contextFactory;
+        protected readonly InMemoryAppContext appContext;
         protected DbSet<TEntity> entities;
 
-        public Repository(InMemoryAppContext appContext)
+        public Repository(IDbContextFactory<InMemoryAppContext> contextFactory)
         {
-            _appContext = appContext;
-            entities = _appContext.Set<TEntity>();
+            this.contextFactory = contextFactory;
+            this.appContext = contextFactory.CreateDbContext();
+            entities = appContext.Set<TEntity>();
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id)
@@ -34,7 +36,7 @@ namespace TrendContext.Domain.Repository.Implementations
         public void Create(TEntity entity)
         {
             entities.Add(entity);
-        }        
+        }
 
         public async Task UpdateAsync(TEntity entity)
         {
@@ -52,7 +54,7 @@ namespace TrendContext.Domain.Repository.Implementations
 
         public async Task Save()
         {
-            await _appContext.SaveChangesAsync();
+            await appContext.SaveChangesAsync();
         }
     }
 }
