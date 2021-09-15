@@ -38,7 +38,7 @@ namespace TrendContext.Domain.Handlers
 
                 if(!request.IsValid)
                 {
-                    AddNotifications(request);
+                    request.AddNotifications(request);
                     return null;
                 }
 
@@ -46,24 +46,23 @@ namespace TrendContext.Domain.Handlers
 
                 if (existingTrend == null)
                 {
-                    AddNotification("Symbol", "Symbol not found.");
+                    request.AddNotification("Symbol", "Symbol not found.");
+                    return null;
                 }
 
                 var existingUser = await userRepository.GetByIdAsync(request.UserId);
 
                 if(existingUser == null)
                 {
-                    AddNotification("UserId", "User not found.");
+                    request.AddNotification("UserId", "User not found.");
                 }
 
-                if(existingTrend.CurrentPrice * request.Amount <= existingUser.CheckingAccountAmount)
+                if(existingTrend.CurrentPrice * request.Amount > existingUser.CheckingAccountAmount)
                 {
-                    AddNotification("Amount", "Insufficient funds.");
+                    request.AddNotification("Amount", "Insufficient funds.");
                 }
 
-                AddNotifications(request);
-
-                if (!IsValid)
+                if (!request.IsValid)
                 {
                     return null;
                 }

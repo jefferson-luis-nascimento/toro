@@ -21,7 +21,7 @@ namespace TrendContext.Domain.Commands.Requests
                 .Requires()
                 .IsNotNullOrEmpty(Symbol, "CreateTrendRequest.Symbol", "Symbol is required.")
                 .IsGreaterThan(CurrentPrice, decimal.Zero, "CreateTrendRequest.CurrentPrice", "CurrentPrice is invalid")
-                .IsTrue(Symbol.Length <= 5 && Symbol.Length >= 8, Symbol, "Symbol is invalid.")
+                .IsFalse(Symbol.Length < 5 && Symbol.Length > 8, Symbol, "Symbol is invalid.")
             );
         }
     }

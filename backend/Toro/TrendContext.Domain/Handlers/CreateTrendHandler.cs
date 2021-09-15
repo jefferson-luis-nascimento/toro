@@ -37,7 +37,10 @@ namespace TrendContext.Domain.Handlers
                 var existTrend = await repository.GetBySymbol(request.Symbol);
 
                 if (existTrend != null)
+                {
+                    request.AddNotification("Symbol", "Already exists this Symbol.");
                     return null;
+                }
 
                 var trend = new Trend
                 {

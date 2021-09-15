@@ -28,10 +28,10 @@ namespace TrendContext.WebApi.Controllers
         /// <response code="200">Returns the newly created item</response>
         /// <response code="500">If has error on server</response> 
         [HttpGet]
-        [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllTrendResponse>))]
+        [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllTrendsResponse>))]
         public async Task<IActionResult> GetAllAsync([FromServices] IMediator mediator)
         {
-            var result = await mediator.Send(new GetAllTrendRequest());
+            var result = await mediator.Send(new GetAllTrendsRequest());
 
             return Ok(result);
         }

@@ -2,7 +2,7 @@
 
 namespace TrendContext.Domain.Commands.Responses
 {
-    public class GetAllTrendResponse
+    public class GetAllTrendsResponse
     {
         [JsonProperty("symbol")]
         public string Symbol { get; set; }

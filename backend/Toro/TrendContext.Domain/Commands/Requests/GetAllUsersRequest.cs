@@ -5,7 +5,7 @@ using TrendContext.Domain.Commands.Responses;
 
 namespace TrendContext.Domain.Commands.Requests
 {
-    public class GetAllTrendRequest : IRequest<IEnumerable<GetAllTrendResponse>>
+    public class GetAllUsersRequest : IRequest<IEnumerable<GetAllUsersResponse>>
     {
         public void Validate()
         {

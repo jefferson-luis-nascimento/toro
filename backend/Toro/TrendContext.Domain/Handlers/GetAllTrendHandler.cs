@@ -10,7 +10,7 @@ using TrendContext.Shared.Repository;
 
 namespace TrendContext.Domain.Handlers
 {
-    public class GetAllTrendHandler : IRequestHandler<GetAllTrendRequest, IEnumerable<GetAllTrendResponse>>
+    public class GetAllTrendHandler : IRequestHandler<GetAllTrendsRequest, IEnumerable<GetAllTrendsResponse>>
     {
         private readonly IRepository<Trend> repository;
 
@@ -19,11 +19,11 @@ namespace TrendContext.Domain.Handlers
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<GetAllTrendResponse>> Handle(GetAllTrendRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetAllTrendsResponse>> Handle(GetAllTrendsRequest request, CancellationToken cancellationToken)
         {
             var result = await repository.GetAllAsync();
 
-            return result.Select(trend => new GetAllTrendResponse
+            return result.Select(trend => new GetAllTrendsResponse
             {
                 Symbol = trend.Symbol,
                 CurrentPrice = trend.CurrentPrice
