@@ -1,7 +1,9 @@
 ﻿using Flunt.Notifications;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrendContext.Domain.Commands.Requests;
@@ -35,7 +37,8 @@ namespace TrendContext.Domain.Handlers
 
                 if(!request.IsValid)
                 {
-                    return new CommandResponse<CreateTrendResponse>(false, 400, string.Join("\n", request.Notifications), null);
+                    return new CommandResponse<CreateTrendResponse>(false, 400,
+                        JsonConvert.SerializeObject(request.Notifications.Select(x => new { x.Key, x.Message })), null);
                 }
 
                 var existTrend = await repository.GetBySymbol(request.Symbol);
