@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using TrendContext.Domain.Data;
 using TrendContext.Domain.Entities;
-using TrendContext.Domain.Repository.Interfaces;
+using TrendContext.Domain.Repositories.Interfaces;
 
-namespace TrendContext.Domain.Repository.Implementations
+namespace TrendContext.Domain.Repositories.Implementations
 {
     public class TrendRepository : Repository<Trend>, ITrendRepository
     {

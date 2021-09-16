@@ -6,7 +6,7 @@ using TrendContext.Domain.Data;
 using TrendContext.Shared.Entities;
 using TrendContext.Shared.Repository;
 
-namespace TrendContext.Domain.Repository.Implementations
+namespace TrendContext.Domain.Repositories.Implementations
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {

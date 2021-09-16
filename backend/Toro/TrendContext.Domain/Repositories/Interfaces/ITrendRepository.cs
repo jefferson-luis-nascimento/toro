@@ -2,7 +2,7 @@
 using TrendContext.Domain.Entities;
 using TrendContext.Shared.Repository;
 
-namespace TrendContext.Domain.Repository.Interfaces
+namespace TrendContext.Domain.Repositories.Interfaces
 {
     public interface ITrendRepository : IRepository<Trend>
     {
