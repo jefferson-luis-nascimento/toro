@@ -10,7 +10,7 @@ using TrendContext.Domain.Commands.Requests;
 using TrendContext.Domain.Commands.Responses;
 using TrendContext.Domain.Data.Interfaces;
 using TrendContext.Domain.Entities;
-using TrendContext.Domain.Repository.Interfaces;
+using TrendContext.Domain.Repositories.Interfaces;
 
 namespace TrendContext.Domain.Handlers
 {
