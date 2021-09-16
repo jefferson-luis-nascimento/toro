@@ -7,6 +7,5 @@ namespace TrendContext.Domain.Entities
     {
         public string Symbol { get; set; }
         public decimal CurrentPrice { get; set; }
-        public virtual List<User> Users { get; set; }
     }
 }

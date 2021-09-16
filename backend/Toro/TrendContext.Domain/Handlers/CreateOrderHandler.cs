@@ -62,30 +62,29 @@ namespace TrendContext.Domain.Handlers
                     return new CommandResponse<CreateOrderResponse>(false, 404, "User not found.", null);
                 }
 
-                var totalOrder = Math.Round(existingTrend.CurrentPrice * request.Amount, 2, MidpointRounding.AwayFromZero);
-
-                if (totalOrder > existingUser.CheckingAccountAmount)
-                {
-                    return new CommandResponse<CreateOrderResponse>(false, 400, "Insufficient funds.", null);
-                }
-
                 var order = new Order
                 {
                     TrendId = existingTrend.Id,
                     UserId = request.UserId,
                     Amount = request.Amount,
+                    Total = Math.Round(existingTrend.CurrentPrice * request.Amount, 2, MidpointRounding.AwayFromZero),
                 };
+
+                if (order.Total > existingUser.CheckingAccountAmount)
+                {
+                    return new CommandResponse<CreateOrderResponse>(false, 400, "Insufficient funds.", null);
+                }
 
                 unitOfWork.BeginTransaction();
 
                 orderRepository.Create(order);
 
-                existingUser.CheckingAccountAmount -= totalOrder;
+                existingUser.CheckingAccountAmount -= order.Total;
                 await userRepository.UpdateAsync(existingUser);
 
                 await unitOfWork.Commit();
 
-                return new CommandResponse<CreateOrderResponse>(true, 201, string.Empty, 
+                return new CommandResponse<CreateOrderResponse>(true, 201, string.Empty,
                     new CreateOrderResponse
                     {
                         Id = order.Id,
