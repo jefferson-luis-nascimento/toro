@@ -1,17 +1,27 @@
 import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
+import { MdClose } from 'react-icons/md';
 
 import { api } from '../../services/api';
 
+import { cpfMask } from '../../helper/cpfMaskHelper';
+import { numberMask } from '../../helper/numberMaskHelper';
+
 import { Container } from './styles';
+
+import { Input } from '../Input';
 
 interface NewOrderModalProps {
   isOpen: boolean;
+  symbol?: string;
   onRequestClose: () => void;
 }
 
-export function NewOrderModal({ isOpen, onRequestClose }: NewOrderModalProps) {
-  const [symbol, setSymbol] = useState('');
+export function NewOrderModal({
+  isOpen,
+  symbol,
+  onRequestClose,
+}: NewOrderModalProps) {
   const [cpf, setCPF] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -44,31 +54,40 @@ export function NewOrderModal({ isOpen, onRequestClose }: NewOrderModalProps) {
         onClick={onRequestClose}
         className="react-modal-close"
         aria-label="X"
-      />
+      >
+        <MdClose color="red" size={28} />
+      </button>
 
       <Container onSubmit={event => handleCreateNewOrder(event)}>
         <h2>Comprar Ação</h2>
-        <input
+        <Input
           type="text"
+          name="symbol"
+          label="Ação"
           placeholder="Ação"
           value={symbol}
           readOnly
-          onChange={event => setSymbol(event.target.value)}
         />
 
-        <input
+        <Input
+          name="cpf"
+          label="CPF"
           type="text"
           placeholder="CPF"
           value={cpf}
-          onChange={event => setCPF(event.target.value)}
-          readOnly
+          onChange={event => setCPF(cpfMask(event.target.value))}
         />
 
-        <input
+        <Input
+          name="amount"
+          label="Quantidade"
           type="number"
           placeholder="Quantidade"
           value={amount}
-          onChange={event => setAmount(event.target.value)}
+          min="0"
+          max="9999999"
+          step="1"
+          onChange={event => setAmount(numberMask(event.target.value))}
         />
 
         <button type="submit">Comprar</button>

@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
+import { MdClose } from 'react-icons/md';
 
 import { api } from '../../services/api';
 
@@ -12,22 +13,16 @@ interface NewOrderModalProps {
 
 export function LoginModal({ isOpen, onRequestClose }: NewOrderModalProps) {
   const [cpf, setCPF] = useState('');
-  const [symbol, setSymbol] = useState('');
-  const [amount, setAmount] = useState('');
 
   async function handleCreateNewOrder(event: FormEvent) {
     event.preventDefault();
 
-    const result = await api.post('/order', {
+    const result = await api.post('/session', {
       cpf,
-      symbol,
-      amount,
     });
 
     console.log(result);
 
-    setSymbol('');
-    setAmount('');
     setCPF('');
 
     onRequestClose();
@@ -45,17 +40,12 @@ export function LoginModal({ isOpen, onRequestClose }: NewOrderModalProps) {
         onClick={onRequestClose}
         className="react-modal-close"
         aria-label="X"
-      />
+      >
+        <MdClose color="red" size={28} />
+      </button>
 
       <Container onSubmit={event => handleCreateNewOrder(event)}>
-        <h2>Comprar Ação</h2>
-        <input
-          type="text"
-          placeholder="Ação"
-          value={symbol}
-          onChange={event => setSymbol(event.target.value)}
-          readOnly
-        />
+        <h2>Acesse sua conta Toro.</h2>
 
         <input
           type="text"
@@ -65,14 +55,7 @@ export function LoginModal({ isOpen, onRequestClose }: NewOrderModalProps) {
           readOnly
         />
 
-        <input
-          type="number"
-          placeholder="Quantidade"
-          value={amount}
-          onChange={event => setAmount(event.target.value)}
-        />
-
-        <button type="submit">Comprar</button>
+        <button type="submit">Entrar</button>
       </Container>
     </Modal>
   );

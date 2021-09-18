@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../assets/logo-toro.svg';
-import { Container, Content } from './styles';
+import { Container, Content, RightContent } from './styles';
 
 interface HeaderProps {
   onOpenLoginModal: () => void;
@@ -13,9 +13,14 @@ export function Header({
     <Container>
       <Content>
         <img src={logo} alt="Toro" />
-        <button type="button" onClick={onOpenLoginModal}>
-          New Login
-        </button>
+        <RightContent>
+          <button type="button" onClick={onOpenLoginModal}>
+            <span>Entrar</span>
+          </button>
+          <button type="button" onClick={onOpenLoginModal}>
+            <span>Cadastre-se</span>
+          </button>
+        </RightContent>
       </Content>
     </Container>
   );

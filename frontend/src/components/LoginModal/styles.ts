@@ -33,7 +33,7 @@ export const Container = styled.form`
     width: 100%;
     padding: 0 1.5rem;
     height: 4rem;
-    background: var(--green);
+    background: var(--blue-button);
     color: #fff;
     border-radius: 0.25rem;
     border: 0;
@@ -41,10 +41,9 @@ export const Container = styled.form`
     margin-top: 1.5rem;
     font-weight: 600;
 
-    transition: filter 0.2s;
-
+    transition: background 0.2s;
     &:hover {
-      filter: brightness(0.9);
+      background: var(--blue);
     }
   }
 `;

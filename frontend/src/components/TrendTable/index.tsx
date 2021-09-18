@@ -4,11 +4,20 @@ import { useTrends } from '../../hooks/useTrends';
 import { Container } from './styles';
 
 interface TrendTableProps {
+  onSetSymbol: (symbol: string) => void;
   onOpenNewOrderModal: () => void;
 }
 
-export function TrendTable({ onOpenNewOrderModal }: TrendTableProps) {
+export function TrendTable({
+  onSetSymbol,
+  onOpenNewOrderModal,
+}: TrendTableProps) {
   const { trends } = useTrends();
+
+  function handleOpenNewOrderModal(currentSymbol: string) {
+    onSetSymbol(currentSymbol);
+    onOpenNewOrderModal();
+  }
 
   return (
     <Container>
@@ -17,7 +26,7 @@ export function TrendTable({ onOpenNewOrderModal }: TrendTableProps) {
           <tr>
             <th>Ativo</th>
             <th>Valor</th>
-            <th>Comprar</th>
+            <th> </th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +41,10 @@ export function TrendTable({ onOpenNewOrderModal }: TrendTableProps) {
                   }).format(trend.currentPrice)}
                 </td>
                 <td className=".order">
-                  <button type="button" onClick={() => onOpenNewOrderModal}>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenNewOrderModal(trend.symbol)}
+                  >
                     <MdShoppingCart size={16} />
                   </button>
                 </td>

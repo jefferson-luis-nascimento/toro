@@ -18,15 +18,26 @@ export const Content = styled.div`
     height: 40px;
     width: 115px;
   }
+`;
+
+export const RightContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   button {
     font-size: 0.875rem;
     color: var(--white);
     background: var(--blue);
     border: 2px solid var(--white);
-    padding: 0 2rem;
+    padding: 1.1rem 1rem;
     border-radius: 0.25rem;
     height: 2rem;
+    margin-right: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     transition: filter 0.2s;
 
