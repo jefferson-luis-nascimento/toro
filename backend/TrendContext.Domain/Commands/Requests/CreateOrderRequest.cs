@@ -23,9 +23,9 @@ namespace TrendContext.Domain.Commands.Requests
         {
             AddNotifications(new Contract<Notification>()
                 .Requires()
-                .IsFalse(UserId == default, "CreateTrendRequest.UserId", "UserId is required.")
-                .IsNotNullOrEmpty(Symbol, "CreateTrendRequest.Symbol", "Symbol is required.")
-                .IsGreaterThan(Amount, 0, "CreateTrendRequest.Amount", "Amount is invalid")
+                .IsFalse(UserId == default, "UserId", "UserId is required.")
+                .IsNotNullOrEmpty(Symbol, "Symbol", "Symbol is required.")
+                .IsGreaterThan(Amount, 0, "Amount", "Amount is invalid")
                 .IsFalse(Symbol.Length < 5 || Symbol.Length > 8, Symbol, "Symbol is invalid.")
             );
         }

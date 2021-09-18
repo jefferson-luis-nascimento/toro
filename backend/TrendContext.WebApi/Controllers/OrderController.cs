@@ -42,7 +42,7 @@ namespace TrendContext.WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAsync([FromServices] IMediator mediator,
+        public async Task<IActionResult> Create([FromServices] IMediator mediator,
                                                      [FromBody] CreateOrderRequest command)
         {
             var result = await mediator.Send(command);

@@ -31,7 +31,7 @@ namespace TrendContext.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType((200), Type = typeof(IEnumerable<GetAllUsersResponse>))]
         [ProducesResponseType((500), Type = typeof(object))]
-        public async Task<IActionResult> GetAllAsync([FromServices] IMediator mediator)
+        public async Task<IActionResult> Get([FromServices] IMediator mediator)
         {
             var result = await mediator.Send(new GetAllUsersRequest());
 
@@ -50,10 +50,40 @@ namespace TrendContext.WebApi.Controllers
         [Route("{id}")]
         [ProducesResponseType((200), Type = typeof(GetAllUsersResponse))]
         [ProducesResponseType((500), Type = typeof(object))]
-        public async Task<IActionResult> GetByIdAsync([FromServices] IMediator mediator,
+        public async Task<IActionResult> Get([FromServices] IMediator mediator,
                                                       [FromRoute] Guid id)
         {
             var result = await mediator.Send(new GetByIdUserRequest { Id = id});
+
+            return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
+        }
+
+        /// <summary>
+        /// Creates a new User.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/v1/user
+        ///     {
+        ///        "name": "Name of User",
+        ///        "cpf": "99999999999"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="mediator"></param>
+        /// <param name="command"></param>
+        /// <returns>A newly created user</returns>
+        /// <response code="201">Returns the newly created user</response>
+        /// <response code="400">If the item is null</response> 
+        /// <response code="500">If has error on server</response> 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromServices] IMediator mediator,
+                                                     [FromBody] CreateUserRequest command)
+        {
+            var result = await mediator.Send(command);
 
             return StatusCode(result.StatusCode, result.Success ? result.Payload : new { message = result.Message });
         }
