@@ -2,34 +2,34 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { Dashboard } from './components/Dashboard';
 import { Header } from './components/Header';
-import { NewTransactionModal } from './components/NewTransactionModal';
+import { LoginModal } from './components/LoginModal';
 import { GlobalStyle } from './styles/global';
-import { TransactionsProvider } from './hooks/useTransactions';
+import { TrendsProvider } from './hooks/useTrends';
 
 Modal.setAppElement('#root');
 
 export function App() {
-  const [isNewTransactioModalOpen, setIsNewTransactioModalOpen] =
-    useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const handleOpenNewTransactionModal = () => {
-    setIsNewTransactioModalOpen(true);
+  const handleOpenLoginModal = () => {
+    setIsLoginModalOpen(true);
   };
 
-  const handleCloseNewTransactioModal = () => {
-    setIsNewTransactioModalOpen(false);
+  const handleCloseLoginModal = () => {
+    setIsLoginModalOpen(false);
   };
 
   return (
-    <TransactionsProvider>
-      <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
+    <TrendsProvider>
+      <Header onOpenLoginModal={handleOpenLoginModal} />
+
       <Dashboard />
 
-      <NewTransactionModal
-        isOpen={isNewTransactioModalOpen}
-        onRequestClose={handleCloseNewTransactioModal}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onRequestClose={handleCloseLoginModal}
       />
       <GlobalStyle />
-    </TransactionsProvider>
+    </TrendsProvider>
   );
 }

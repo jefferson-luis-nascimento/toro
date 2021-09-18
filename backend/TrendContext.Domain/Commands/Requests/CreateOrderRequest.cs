@@ -1,4 +1,5 @@
-﻿using Flunt.Notifications;
+﻿using Flunt.Extensions.Br.Validations;
+using Flunt.Notifications;
 using Flunt.Validations;
 using MediatR;
 using Newtonsoft.Json;
@@ -10,8 +11,8 @@ namespace TrendContext.Domain.Commands.Requests
 {
     public class CreateOrderRequest : Notifiable<Notification>, IRequest<CommandResponse<CreateOrderResponse>>, ICommand
     {
-        [JsonProperty("userId")]
-        public Guid UserId { get; set; }
+        [JsonProperty("cpf")]
+        public string CPF { get; set; }
 
         [JsonProperty("symbol")]
         public string Symbol { get; set; }
@@ -23,7 +24,8 @@ namespace TrendContext.Domain.Commands.Requests
         {
             AddNotifications(new Contract<Notification>()
                 .Requires()
-                .IsFalse(UserId == default, "UserId", "UserId is required.")
+                .IsNotNullOrEmpty(CPF, "CPF", "CPF is required.")
+                .IsCpf(CPF, "CPF", "CPF invalid.")
                 .IsNotNullOrEmpty(Symbol, "Symbol", "Symbol is required.")
                 .IsGreaterThan(Amount, 0, "Amount", "Amount is invalid")
                 .IsFalse(Symbol.Length < 5 || Symbol.Length > 8, Symbol, "Symbol is invalid.")

@@ -5,32 +5,34 @@ export const Container = styled.header`
 `;
 
 export const Content = styled.div`
-  max-width: 1120px;
+  max-width: 1220px;
   margin: 0 auto;
+  height: 72px;
 
-  padding: 2rem 1rem 12rem;
+  padding: 2rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  img {
-    height: 100px;
-    width: 100px;
+  svg {
+    height: 40px;
+    width: 115px;
   }
 
   button {
-    font-size: 1rem;
-    color: #fff;
-    background: var(--blue-light);
-    border: 0;
+    font-size: 0.875rem;
+    color: var(--white);
+    background: var(--blue);
+    border: 2px solid var(--white);
     padding: 0 2rem;
     border-radius: 0.25rem;
-    height: 3rem;
+    height: 2rem;
 
     transition: filter 0.2s;
 
     &:hover {
-      filter: brightness(0.9);
+      background: var(--white);
+      color: var(--blue);
     }
   }
 `;

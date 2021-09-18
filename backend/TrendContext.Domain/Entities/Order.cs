@@ -11,5 +11,10 @@ namespace TrendContext.Domain.Entities
         public decimal Total { get; set; }
         public virtual User User { get; set; }
         public virtual Trend Trend { get; set; }
+
+        public static decimal CalculateTotalOrder(decimal currentPrice, decimal amount)
+        {
+            return Math.Round(currentPrice * amount, 2, MidpointRounding.AwayFromZero);
+        }
     }
 }

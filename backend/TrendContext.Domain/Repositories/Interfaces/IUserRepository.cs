@@ -7,5 +7,7 @@ namespace TrendContext.Domain.Repositories.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         Task<bool> CheckCpfAlreadyExists(string cpf);
+
+        Task<User> GetByCPF(string cpf);
     }
 }

@@ -1,20 +1,20 @@
 import React from 'react';
-import logo from '../../assets/toro-logo.png';
+import logo from '../../assets/logo-toro.svg';
 import { Container, Content } from './styles';
 
 interface HeaderProps {
-  onOpenNewTransactionModal: () => void;
+  onOpenLoginModal: () => void;
 }
 
 export function Header({
-  onOpenNewTransactionModal,
+  onOpenLoginModal,
 }: HeaderProps): React.ReactElement<HeaderProps> {
   return (
     <Container>
       <Content>
         <img src={logo} alt="Toro" />
-        <button type="button" onClick={onOpenNewTransactionModal}>
-          Nova Transação
+        <button type="button" onClick={onOpenLoginModal}>
+          New Login
         </button>
       </Content>
     </Container>

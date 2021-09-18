@@ -19,13 +19,13 @@ namespace TrendContext.Domain.Handlers
     {
         private readonly IRepository<Order> orderRepository;
         private readonly ITrendRepository trendRepository;
-        private readonly IRepository<User> userRepository;
+        private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogger<CreateOrderHandler> logger;
 
         public CreateOrderHandler(IRepository<Order> orderRepository,
             ITrendRepository trendRepository,
-            IRepository<User> userRepository,
+            IUserRepository userRepository,
             IUnitOfWork unitOfWork,
             ILogger<CreateOrderHandler> logger)
         {
@@ -55,7 +55,7 @@ namespace TrendContext.Domain.Handlers
                     return new CommandResponse<CreateOrderResponse>(false, 404, "Trend not found.", null);
                 }
 
-                var existingUser = await userRepository.GetByIdAsync(request.UserId);
+                var existingUser = await userRepository.GetByCPF(request.CPF);
 
                 if (existingUser == null)
                 {
@@ -65,9 +65,9 @@ namespace TrendContext.Domain.Handlers
                 var order = new Order
                 {
                     TrendId = existingTrend.Id,
-                    UserId = request.UserId,
+                    UserId = existingUser.Id,
                     Amount = request.Amount,
-                    Total = Math.Round(existingTrend.CurrentPrice * request.Amount, 2, MidpointRounding.AwayFromZero),
+                    Total = Order.CalculateTotalOrder(existingTrend.CurrentPrice , request.Amount),
                 };
 
                 if (order.Total > existingUser.CheckingAccountAmount)
