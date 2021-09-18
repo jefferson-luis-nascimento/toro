@@ -1,7 +1,6 @@
 ﻿using Flunt.Notifications;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,7 +10,6 @@ using TrendContext.Domain.Commands.Responses;
 using TrendContext.Domain.Data.Interfaces;
 using TrendContext.Domain.Entities;
 using TrendContext.Domain.Repositories.Interfaces;
-using TrendContext.Shared.Repository;
 
 namespace TrendContext.Domain.Handlers
 {
@@ -38,8 +36,7 @@ namespace TrendContext.Domain.Handlers
 
                 if(!request.IsValid)
                 {
-                    return new CommandResponse<CreateUserResponse>(false, 400,
-                        JsonConvert.SerializeObject(request.Notifications.Select(x => new { x.Key, x.Message })), null);
+                    return new CommandResponse<CreateUserResponse>(false, 400, string.Join("<br />", request.Notifications.Select(x => x.Message)), null);
                 }
 
 

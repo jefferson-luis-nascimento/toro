@@ -21,8 +21,6 @@ export function LoginModal({ isOpen, onRequestClose }: NewOrderModalProps) {
       cpf,
     });
 
-    console.log(result);
-
     setCPF('');
 
     onRequestClose();

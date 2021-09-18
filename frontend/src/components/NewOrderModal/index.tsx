@@ -1,6 +1,8 @@
 import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
 import { MdClose } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 import { api } from '../../services/api';
 
@@ -10,6 +12,7 @@ import { numberMask } from '../../helper/numberMaskHelper';
 import { Container } from './styles';
 
 import { Input } from '../Input';
+import { Button } from '../Button';
 
 interface NewOrderModalProps {
   isOpen: boolean;
@@ -25,21 +28,26 @@ export function NewOrderModal({
   const [cpf, setCPF] = useState('');
   const [amount, setAmount] = useState('');
 
-  async function handleCreateNewOrder(event: FormEvent) {
+  function handleCreateNewOrder(event: FormEvent) {
     event.preventDefault();
 
-    const result = await api.post('/order', {
-      cpf,
-      symbol,
-      amount,
-    });
+    api
+      .post('/order', {
+        cpf,
+        symbol,
+        amount,
+      })
+      .then(response => {
+        toast.success('Compra realizar com sucesso');
 
-    console.log(result);
+        setAmount('');
+        setCPF('');
 
-    setAmount('');
-    setCPF('');
-
-    onRequestClose();
+        onRequestClose();
+      })
+      .catch(error => {
+        toast.error(error?.response?.data?.message);
+      });
   }
 
   return (
@@ -84,13 +92,10 @@ export function NewOrderModal({
           type="number"
           placeholder="Quantidade"
           value={amount}
-          min="0"
-          max="9999999"
-          step="1"
           onChange={event => setAmount(numberMask(event.target.value))}
         />
 
-        <button type="submit">Comprar</button>
+        <Button type="submit">Comprar</Button>
       </Container>
     </Modal>
   );

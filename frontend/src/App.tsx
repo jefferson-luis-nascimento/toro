@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
+import { ToastContainer } from 'react-toastify';
+
 import { Dashboard } from './components/Dashboard';
 import { Header } from './components/Header';
 import { LoginModal } from './components/LoginModal';
 import { NewOrderModal } from './components/NewOrderModal';
 import { GlobalStyle } from './styles/global';
 import { TrendsProvider } from './hooks/useTrends';
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 
@@ -49,6 +52,8 @@ export function App() {
         onRequestClose={handleCloseLoginModal}
       />
       <GlobalStyle />
+
+      <ToastContainer autoClose={2000} />
     </TrendsProvider>
   );
 }
