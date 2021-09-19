@@ -17,7 +17,6 @@ export function App() {
     <Router>
       <AppProvider>
         <Routes />
-        <Header />
 
         <GlobalStyle />
 

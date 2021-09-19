@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export const Container = styled.header`
   background: var(--blue);
+  padding: 0 50px;
 `;
 
 export const Content = styled.div`

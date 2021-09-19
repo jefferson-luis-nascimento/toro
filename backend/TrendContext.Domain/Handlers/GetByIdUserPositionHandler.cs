@@ -55,9 +55,11 @@ namespace TrendContext.Domain.Handlers
                             Symbol = order.Trend.Symbol,
                             Amount = order.Amount,
                             CurrentPrice = order.Trend.CurrentPrice,
+                            Total = order.Total,
+                            OrderDate = order.CreatedIn,
 
                         }).ToList(),
-                        Consolidated = result.CheckingAccountAmount + (orders.Sum(x => Order.CalculateTotalOrder(x.Trend.CurrentPrice , x.Amount))),
+                        Consolidated = result.CheckingAccountAmount + (orders.Sum(x => x.Total )),
                     });
             }
             catch (Exception ex)

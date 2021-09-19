@@ -1,3 +1,4 @@
+import { lighten } from 'polished';
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -5,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     --background: #ffffff;
     --red: #db3a34;
     --blue: #1f073b;
+    --light-blue: ${lighten(0.2, '#1f073b')} ;
     --blue-button: #6131b4;
     --green: #00b279;
     --orange: #FF6A13;

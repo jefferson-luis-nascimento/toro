@@ -6,9 +6,26 @@ export const Container = styled.main`
   margin-left: 0 auto;
 `;
 
-export const Title = styled.h1`
-  font-size: 1.5rem;
+export const Card = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 100px;
+`;
+
+export const SideCard = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const Type = styled.h3`
   color: var(--blue);
-  font-weight: 500;
-  text-align: center;
+  display: block;
+`;
+
+export const Value = styled.h2`
+  color: var(--light-blue);
+  display: block;
 `;

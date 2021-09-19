@@ -16,5 +16,11 @@ namespace TrendContext.Domain.Commands.Responses
 
         [JsonProperty("currentPrice")]
         public decimal CurrentPrice { get; set; }
+
+        [JsonProperty("total")]
+        public decimal Total { get; set; }
+
+        [JsonProperty("orderDate")]
+        public DateTime OrderDate { get; set; }
     }
 }

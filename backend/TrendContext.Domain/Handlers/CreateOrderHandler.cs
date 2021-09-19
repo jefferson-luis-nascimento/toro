@@ -89,6 +89,8 @@ namespace TrendContext.Domain.Handlers
                         Symbol = existingTrend.Symbol,
                         Amount = order.Amount,
                         CurrentPrice = existingTrend.CurrentPrice,
+                        Total = order.Total,
+                        OrderDate = order.CreatedIn,
                     });
             }
             catch (Exception ex)

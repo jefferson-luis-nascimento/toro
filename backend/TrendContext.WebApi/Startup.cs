@@ -186,6 +186,7 @@ namespace TrendContext.WebApi
                 UserId = rebeca.Id,
                 TrendId = petr4.Id,
                 Amount = 2,
+                Total = Order.CalculateTotalOrder(petr4.CurrentPrice, 2),
             };
 
             var order2 = new Order
@@ -194,6 +195,7 @@ namespace TrendContext.WebApi
                 UserId = rebeca.Id,
                 TrendId = sanb11.Id,
                 Amount = 3,
+                Total = Order.CalculateTotalOrder(sanb11.CurrentPrice, 3),
             };
 
             context.Orders.Add(order1);

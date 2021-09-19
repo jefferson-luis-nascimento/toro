@@ -1,33 +1,65 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Container, Title } from './styles';
-import { TrendTable } from '../../components/TrendTable';
-import { NewOrderModal } from '../../components/NewOrderModal';
+import { Container, Card, SideCard, Type, Value } from './styles';
+import { OrderTable } from '../../components/OrderTable';
+
+import { useAuth } from '../../hooks/useAuth';
+import { api } from '../../services/api';
+
+interface Trend {
+  id: string;
+  symbol: string;
+  amount: number;
+  currentPrice: number;
+  total: number;
+  orderDate: string;
+}
+
+interface UserPosition {
+  id: string;
+  name: string;
+  cpf: string;
+  positions: Trend[];
+  checkingAccountAmount: number;
+  consolidated: number;
+}
 
 export function Dashboard() {
-  const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
-  const [symbol, setSymbol] = useState('');
+  const { user } = useAuth();
+  const [userPosition, setUserPosition] = useState<UserPosition>();
 
-  const handleOpenNewOrderModal = () => {
-    setIsNewOrderModalOpen(true);
-  };
+  useEffect(() => {
+    async function loadUserPosition() {
+      const response = await api.get(`/userposition/${user.id}`);
+      setUserPosition(response.data);
+    }
 
-  const handleCloseNewOrderModal = () => {
-    setIsNewOrderModalOpen(false);
-  };
+    loadUserPosition();
+  }, [user.id]);
+
   return (
     <Container>
-      <Title>Lista de 5 ações negociadas nos últimos 7 dias</Title>
-      <TrendTable
-        onSetSymbol={setSymbol}
-        onOpenNewOrderModal={handleOpenNewOrderModal}
-      />
-
-      <NewOrderModal
-        isOpen={isNewOrderModalOpen}
-        symbol={symbol}
-        onRequestClose={handleCloseNewOrderModal}
-      />
+      <Card>
+        <SideCard>
+          <Type>Saldo C/C</Type>
+          <Value>
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(userPosition?.checkingAccountAmount || 0)}
+          </Value>
+        </SideCard>
+        <SideCard>
+          <Type>Saldo Consolidado</Type>
+          <Value>
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(userPosition?.consolidated || 0)}
+          </Value>
+        </SideCard>
+      </Card>
+      <OrderTable trends={userPosition?.positions} />
     </Container>
   );
 }
