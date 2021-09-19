@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   label {
+    display: block;
     color: var(--blue);
-    font-size: 1.25rem;
-    padding: 10px;
+    font-size: 1rem;
+    padding-bottom: 10px;
   }
 
   input {

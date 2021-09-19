@@ -1,7 +1,14 @@
 import { MdShoppingCart } from 'react-icons/md';
 
-import { useTrends } from '../../hooks/useTrends';
+import { useEffect, useState } from 'react';
 import { Container } from './styles';
+
+import { api } from '../../services/api';
+
+interface Trend {
+  symbol: string;
+  currentPrice: number;
+}
 
 interface TrendTableProps {
   onSetSymbol: (symbol: string) => void;
@@ -12,7 +19,16 @@ export function TrendTable({
   onSetSymbol,
   onOpenNewOrderModal,
 }: TrendTableProps) {
-  const { trends } = useTrends();
+  const [trends, setTrends] = useState<Trend[]>([]);
+
+  useEffect(() => {
+    async function loadTrends() {
+      const response = await api.get<Trend[]>('/trends');
+      setTrends(response.data);
+    }
+
+    loadTrends();
+  }, []);
 
   function handleOpenNewOrderModal(currentSymbol: string) {
     onSetSymbol(currentSymbol);

@@ -18,6 +18,8 @@ namespace TrendContext.Domain.Commands.Requests
 
         public void Validate()
         {
+            CPF = CPF.Replace(".", "").Replace("-", "");
+
             AddNotifications(new Contract<Notification>()
                 .Requires()
                 .IsNotNullOrEmpty(Name, "Name", "Name is required.")

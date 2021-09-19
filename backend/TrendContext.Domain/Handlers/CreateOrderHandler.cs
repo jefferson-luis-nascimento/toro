@@ -43,7 +43,7 @@ namespace TrendContext.Domain.Handlers
 
                 if (!request.IsValid)
                 {
-                    return new CommandResponse<CreateOrderResponse>(false, 400, string.Join("<br />", request.Notifications.Select(x => x.Message)), null);
+                    return new CommandResponse<CreateOrderResponse>(false, 400, string.Join(Environment.NewLine, request.Notifications.Select(x => x.Message)), null);
                 }
 
                 var existingTrend = await trendRepository.GetBySymbol(request.Symbol);

@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { ToastContainer } from 'react-toastify';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Dashboard } from './components/Dashboard';
 import { Header } from './components/Header';
-import { LoginModal } from './components/LoginModal';
 import { NewOrderModal } from './components/NewOrderModal';
 import { GlobalStyle } from './styles/global';
-import { TrendsProvider } from './hooks/useTrends';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppProvider } from './hooks';
+import { Routes } from './Routes';
 
 Modal.setAppElement('#root');
 
 export function App() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
   const [symbol, setSymbol] = useState('');
 
@@ -24,36 +23,23 @@ export function App() {
   const handleCloseNewOrderModal = () => {
     setIsNewOrderModalOpen(false);
   };
-  const handleOpenLoginModal = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const handleCloseLoginModal = () => {
-    setIsLoginModalOpen(false);
-  };
 
   return (
-    <TrendsProvider>
-      <Header onOpenLoginModal={handleOpenLoginModal} />
+    <Router>
+      <AppProvider>
+        <Routes />
+        <Header />
 
-      <Dashboard
-        onSetSymbol={setSymbol}
-        onOpenNewOrderModal={handleOpenNewOrderModal}
-      />
+        <NewOrderModal
+          isOpen={isNewOrderModalOpen}
+          symbol={symbol}
+          onRequestClose={handleCloseNewOrderModal}
+        />
 
-      <NewOrderModal
-        isOpen={isNewOrderModalOpen}
-        symbol={symbol}
-        onRequestClose={handleCloseNewOrderModal}
-      />
+        <GlobalStyle />
 
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onRequestClose={handleCloseLoginModal}
-      />
-      <GlobalStyle />
-
-      <ToastContainer autoClose={2000} />
-    </TrendsProvider>
+        <ToastContainer autoClose={2000} />
+      </AppProvider>
+    </Router>
   );
 }

@@ -25,6 +25,12 @@ export const RightContent = styled.div`
   align-items: center;
   justify-content: center;
 
+  > span {
+    font-size: 0.875rem;
+    color: var(--white);
+    margin-right: 20px;
+  }
+
   button {
     font-size: 0.875rem;
     color: var(--white);
