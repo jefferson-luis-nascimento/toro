@@ -53,7 +53,7 @@ Executar via Visual Studio 2019
 ### Instalar as dependências do frontend-web
 
 ```
-$> cd ./frontend/ && yarn
+$> cd ./toro/frontend/ && yarn
 ```
 
 ### Executando o aplicativo
