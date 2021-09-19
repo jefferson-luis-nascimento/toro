@@ -46,7 +46,7 @@ Passo passo de instalação do ambiente de desenvolvimento após feito download:
 
 ### Instalar as dependências do backend
 
-Executar via Visual Studio 2019
+Executar via Visual Studio 2019 o projeto TrendContext.WebApi
 
 ## Frontend-web
 
