@@ -1,6 +1,4 @@
 import { FormEvent, useState } from 'react';
-import Modal from 'react-modal';
-import { MdClose } from 'react-icons/md';
 
 import { useAuth } from '../../hooks/useAuth';
 import { Input } from '../../components/Input';

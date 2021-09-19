@@ -22,7 +22,6 @@ namespace TrendContext.Domain.Commands.Requests
 
         public void Validate()
         {
-            CPF = CPF.Replace(".", "").Replace("-", "");
             AddNotifications(new Contract<Notification>()
                 .Requires()
                 .IsNotNullOrEmpty(CPF, "CPF", "CPF is required.")

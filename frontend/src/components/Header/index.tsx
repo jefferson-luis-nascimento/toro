@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import logo from '../../assets/logo-toro.svg';
 import {
@@ -13,9 +13,14 @@ import { useAuth } from '../../hooks/useAuth';
 
 export function Header() {
   const { signed, user, signOut } = useAuth();
+  const history = useHistory();
 
   function handleSignOut() {
     signOut();
+  }
+
+  function handleSignUp() {
+    history.push('/signup');
   }
 
   return (
@@ -25,12 +30,13 @@ export function Header() {
           <Link id="logo" to="/dashboard">
             <img src={logo} alt="Toro" />
           </Link>
+          {signed && (
+            <div>
+              <LinkElem to="/dashboard">Dashboard</LinkElem>
 
-          <div>
-            <LinkElem to="/dashboard">Dashboard</LinkElem>
-
-            <LinkElem to="/order">Comprar Ações</LinkElem>
-          </div>
+              <LinkElem to="/order">Comprar Ações</LinkElem>
+            </div>
+          )}
         </LeftContent>
 
         <RightContent>
@@ -42,7 +48,7 @@ export function Header() {
               </button>
             </>
           ) : (
-            <button type="button">
+            <button type="button" onClick={handleSignUp}>
               <span>Cadastre-se</span>
             </button>
           )}
