@@ -64,7 +64,7 @@ namespace TrendContext.WebApi.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /api/v1/user
+        ///     POST /api/v1/users
         ///     {
         ///        "name": "Name of User",
         ///        "cpf": "99999999999"

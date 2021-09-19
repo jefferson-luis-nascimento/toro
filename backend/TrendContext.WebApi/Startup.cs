@@ -35,6 +35,7 @@ namespace TrendContext.WebApi
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<ITrendRepository, TrendRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

@@ -53,7 +53,7 @@ namespace TrendContext.Domain.Handlers
                     return new CommandResponse<CreateOrderResponse>(false, 404, "Trend not found.", null);
                 }
 
-                var existingUser = await userRepository.GetByCPF(request.CPF);
+                var existingUser = await userRepository.GetByCPFAsync(request.CPF);
 
                 if (existingUser == null)
                 {
@@ -88,6 +88,7 @@ namespace TrendContext.Domain.Handlers
                         Id = order.Id,
                         Symbol = existingTrend.Symbol,
                         Amount = order.Amount,
+                        CurrentPrice = existingTrend.CurrentPrice,
                     });
             }
             catch (Exception ex)

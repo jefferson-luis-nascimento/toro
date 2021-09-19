@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrendContext.Domain.Entities;
 using TrendContext.Shared.Repository;
 
 namespace TrendContext.Domain.Repositories.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IOrderRepository : IRepository<Order>
     {
-        Task<bool> CheckCpfAlreadyExistsAsync(string cpf);
-
-        Task<User> GetByCPFAsync(string cpf);
+        Task<List<Order>> GetByUserIdAsync(Guid id);
     }
 }

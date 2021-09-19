@@ -14,12 +14,12 @@ namespace TrendContext.Domain.Repositories.Implementations
 
         }
 
-        public async Task<bool> CheckCpfAlreadyExists(string cpf)
+        public async Task<bool> CheckCpfAlreadyExistsAsync(string cpf)
         {
             return await entities.AnyAsync(user => user.CPF == cpf);
         }
 
-        public async Task<User> GetByCPF(string cpf)
+        public async Task<User> GetByCPFAsync(string cpf)
         {
             return await entities.FirstOrDefaultAsync(user => user.CPF == cpf);
         }

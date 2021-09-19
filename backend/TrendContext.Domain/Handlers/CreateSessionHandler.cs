@@ -39,7 +39,7 @@ namespace TrendContext.Domain.Handlers
                     return new CommandResponse<CreateSessionResponse>(false, 400, string.Join("<br />", request.Notifications.Select(x => x.Message)), null);
                 }
 
-                var existsUser = await repository.GetByCPF(request.CPF);
+                var existsUser = await repository.GetByCPFAsync(request.CPF);
 
                 if (existsUser == null)
                 {

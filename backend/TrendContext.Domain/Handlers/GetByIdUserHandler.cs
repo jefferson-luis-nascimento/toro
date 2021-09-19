@@ -1,23 +1,20 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TrendContext.Domain.Commands.Requests;
 using TrendContext.Domain.Commands.Responses;
-using TrendContext.Domain.Entities;
-using TrendContext.Shared.Repository;
+using TrendContext.Domain.Repositories.Interfaces;
 
 namespace TrendContext.Domain.Handlers
 {
     public class GetByIdUserHandler : IRequestHandler<GetByIdUserRequest, CommandResponse<GetByIdUserResponse>>
     {
-        private readonly IRepository<User> repository;
+        private readonly IUserRepository repository;
         private readonly ILogger<GetByIdUserHandler> logger;
 
-        public GetByIdUserHandler(IRepository<User> repository,
+        public GetByIdUserHandler(IUserRepository repository,
             ILogger<GetByIdUserHandler> logger)
         {
             this.repository = repository;

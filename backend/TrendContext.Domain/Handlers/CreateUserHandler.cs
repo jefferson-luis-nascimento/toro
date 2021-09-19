@@ -40,7 +40,7 @@ namespace TrendContext.Domain.Handlers
                 }
 
 
-                if (await repository.CheckCpfAlreadyExists(request.CPF))
+                if (await repository.CheckCpfAlreadyExistsAsync(request.CPF))
                 {
                     return new CommandResponse<CreateUserResponse>(false, 400, "Already exists this CPF.", null);
                 }
