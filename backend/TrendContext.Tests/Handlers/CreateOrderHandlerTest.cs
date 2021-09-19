@@ -42,6 +42,22 @@ namespace TrendContext.Tests.Handlers
         }
 
         [TestMethod]
+        public void ShouldBeAbleToCalculateTotalOrder()
+        {
+            var expect = 100M;
+            var result = Order.CalculateTotalOrder(50, 2);
+
+            Assert.IsTrue(expect == result);
+            
+            expect = 45.39M;
+
+            result = Order.CalculateTotalOrder(15.13M, 3);
+
+            Assert.IsTrue(expect == result);
+
+        }
+
+        [TestMethod]
         public async Task ShouldBeAbleToCreateOrder()
         {
             InitialDependencies("ShouldBeAbleToCreateOrder");
