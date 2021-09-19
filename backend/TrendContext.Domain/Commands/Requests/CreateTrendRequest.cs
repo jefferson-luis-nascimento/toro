@@ -19,8 +19,8 @@ namespace TrendContext.Domain.Commands.Requests
         {
             AddNotifications(new Contract<Notification>()
                 .Requires()
-                .IsNotNullOrEmpty(Symbol, "Symbol", "Symbol is required.")
-                .IsGreaterThan(CurrentPrice, decimal.Zero, "CurrentPrice", "CurrentPrice is invalid")
+                .IsNotNullOrWhiteSpace(Symbol, "Symbol", "Symbol is required.")
+                .IsGreaterThan(CurrentPrice, decimal.Zero, "CurrentPrice", "CurrentPrice is invalid.")
                 .IsFalse(Symbol.Length < 5 || Symbol.Length > 8, Symbol, "Symbol is invalid.")
             );
         }

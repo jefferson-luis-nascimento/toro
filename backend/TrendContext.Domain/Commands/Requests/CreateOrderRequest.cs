@@ -27,7 +27,7 @@ namespace TrendContext.Domain.Commands.Requests
                 .IsNotNullOrEmpty(CPF, "CPF", "CPF is required.")
                 .IsCpf(CPF, "CPF", "CPF invalid.")
                 .IsNotNullOrEmpty(Symbol, "Symbol", "Symbol is required.")
-                .IsGreaterThan(Amount, 0, "Amount", "Amount is invalid")
+                .IsGreaterThan(Amount, 0, "Amount", "Amount is invalid.")
                 .IsFalse(Symbol.Length < 5 || Symbol.Length > 8, Symbol, "Symbol is invalid.")
             );
         }
