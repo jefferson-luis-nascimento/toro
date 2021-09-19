@@ -67,7 +67,13 @@ export function AuthProvider({ children }: UserProviderProps) {
         setData({ user, token });
       })
       .catch(error => {
-        toast.error(error?.response?.data?.message);
+        let message = error?.response?.data?.message;
+
+        if (!message) {
+          message = error.message;
+        }
+
+        toast.error(message);
       });
   }, []);
 

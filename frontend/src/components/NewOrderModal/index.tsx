@@ -2,17 +2,16 @@ import { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
 import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
 
-import { api } from '../../services/api';
-
-import { cpfMask } from '../../helper/cpfMaskHelper';
-import { numberMask } from '../../helper/numberMaskHelper';
-
+import { useHistory } from 'react-router-dom';
 import { Container } from './styles';
-
 import { Input } from '../Input';
 import { Button } from '../Button';
+
+import { api } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
+
+import { numberMask } from '../../helper/numberMaskHelper';
 
 interface NewOrderModalProps {
   isOpen: boolean;
@@ -25,15 +24,16 @@ export function NewOrderModal({
   symbol,
   onRequestClose,
 }: NewOrderModalProps) {
-  const [cpf, setCPF] = useState('');
   const [amount, setAmount] = useState('');
+  const history = useHistory();
+  const { user } = useAuth();
 
   function handleCreateNewOrder(event: FormEvent) {
     event.preventDefault();
 
     api
       .post('/order', {
-        cpf,
+        cpf: user.cpf,
         symbol,
         amount,
       })
@@ -41,12 +41,17 @@ export function NewOrderModal({
         toast.success('Compra realizar com sucesso');
 
         setAmount('');
-        setCPF('');
-
+        history.push('/dashboard');
         onRequestClose();
       })
       .catch(error => {
-        toast.error(error?.response?.data?.message);
+        let message = error?.response?.data?.message;
+
+        if (!message) {
+          message = error.message;
+        }
+
+        toast.error(message);
       });
   }
 
@@ -75,15 +80,6 @@ export function NewOrderModal({
           placeholder="Ação"
           value={symbol}
           readOnly
-        />
-
-        <Input
-          name="cpf"
-          label="CPF"
-          type="text"
-          placeholder="CPF"
-          value={cpf}
-          onChange={event => setCPF(cpfMask(event.target.value))}
         />
 
         <Input
