@@ -33,6 +33,10 @@ Abaixo seguem as intruções para baixar e executar o projeto em ambiente de des
 ```
 $> git clone https://github.com/jefferson-luis-nascimento/toro.git
 ```
+ou
+```
+$> git clone git@github.com:jefferson-luis-nascimento/toro.git
+```
 
 ## Instalação
 
