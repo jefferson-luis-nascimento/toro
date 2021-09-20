@@ -80,6 +80,7 @@ $> yarn start
 - Asp.Net Core 5
 - MVC design pattern
 - CQRS design pattern
+- MediatR
 - InMemoryEntityFrameworkCore
 - Flunt
 - MS Tests
