@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,7 @@ namespace TrendContext.WebApi.Controllers
         /// <response code="500">If has error on server</response> 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         [ProducesResponseType((200), Type = typeof(GetAllUsersResponse))]
         [ProducesResponseType((500), Type = typeof(object))]
         public async Task<IActionResult> Get([FromServices] IMediator mediator,

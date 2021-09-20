@@ -10,18 +10,22 @@ using TrendContext.Domain.Commands.Responses;
 using TrendContext.Domain.Data.Interfaces;
 using TrendContext.Domain.Entities;
 using TrendContext.Domain.Repositories.Interfaces;
+using TrendContext.Domain.Services;
 
 namespace TrendContext.Domain.Handlers
 {
     public class CreateSessionHandler : Notifiable<Notification>, IRequestHandler<CreateSessionRequest, CommandResponse<CreateSessionResponse>>
     {
         private readonly IUserRepository repository;
+        private readonly ITokenService tokenService;
         private readonly ILogger<CreateSessionHandler> logger;
 
-        public CreateSessionHandler(IUserRepository repository, 
+        public CreateSessionHandler(IUserRepository repository,
+            ITokenService tokenService,
             ILogger<CreateSessionHandler> logger)
         {
             this.repository = repository;
+            this.tokenService = tokenService;
             this.logger = logger;
         }
 
@@ -43,13 +47,15 @@ namespace TrendContext.Domain.Handlers
                     return new CommandResponse<CreateSessionResponse>(false, 400, "User not found.", null);
                 }
 
+                var token = tokenService.GenerateToken(existsUser);
+
                 return new CommandResponse<CreateSessionResponse>(true, 201, string.Empty,
                     new CreateSessionResponse
                     {
                         Id = existsUser.Id,
                         Name = existsUser.Name,
                         CPF = existsUser.CPF,
-                        Token = "token JWT"
+                        Token = token,
                     });
             }
             catch (Exception ex)
