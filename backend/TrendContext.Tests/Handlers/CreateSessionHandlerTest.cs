@@ -9,6 +9,7 @@ using TrendContext.Domain.Entities;
 using TrendContext.Domain.Handlers;
 using TrendContext.Domain.Repositories.Implementations;
 using TrendContext.Domain.Repositories.Interfaces;
+using TrendContext.Domain.Services;
 using TrendContext.Shared.Repository;
 
 namespace TrendContext.Tests.Handlers
@@ -17,8 +18,9 @@ namespace TrendContext.Tests.Handlers
     public class CreateSessionHandlerTest
     {
         private InMemoryAppContext appContext;
+        private ITokenService tokenService;
         private IUserRepository userRepository;
-        private  ILogger<CreateSessionHandler> logger;
+        private ILogger<CreateSessionHandler> logger;
 
 
         private void InitialDependencies(string nomeBanco)
@@ -29,6 +31,7 @@ namespace TrendContext.Tests.Handlers
 
             appContext = new InMemoryAppContext(options);
             userRepository = new UserRepository(appContext);
+            tokenService = new TokenService();
             logger = new Logger<CreateSessionHandler>(new LoggerFactory());
 
             InitialData.AddDefaultData(appContext);
@@ -44,7 +47,7 @@ namespace TrendContext.Tests.Handlers
                 CPF = "69686332804",
             };
 
-            var handler = new CreateSessionHandler(userRepository, logger);
+            var handler = new CreateSessionHandler(userRepository, tokenService, logger);
 
             var result = await handler.Handle(command, new System.Threading.CancellationToken());
 
@@ -67,7 +70,7 @@ namespace TrendContext.Tests.Handlers
                 CPF = "69686332804987",
             };
 
-            var handler = new CreateSessionHandler(userRepository, logger);
+            var handler = new CreateSessionHandler(userRepository, tokenService, logger);
 
             var result = await handler.Handle(command, new System.Threading.CancellationToken());
 
@@ -88,7 +91,7 @@ namespace TrendContext.Tests.Handlers
                 CPF = "00000000191",
             };
 
-            var handler = new CreateSessionHandler(userRepository, logger);
+            var handler = new CreateSessionHandler(userRepository, tokenService, logger);
 
             var result = await handler.Handle(command, new System.Threading.CancellationToken());
 
