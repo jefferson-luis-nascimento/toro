@@ -59,6 +59,8 @@ export function AuthProvider({ children }: UserProviderProps) {
       .then(response => {
         const { id, cpf, name, token } = response.data;
 
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+
         const user = { id, cpf, name };
 
         localStorage.setItem('@Toro:user', JSON.stringify(user));

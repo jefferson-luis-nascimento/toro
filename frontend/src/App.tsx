@@ -3,12 +3,11 @@ import Modal from 'react-modal';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Header } from './components/Header';
-
 import { GlobalStyle } from './styles/global';
-import 'react-toastify/dist/ReactToastify.css';
 import { AppProvider } from './hooks';
 import { Routes } from './Routes';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 
