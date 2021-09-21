@@ -91,7 +91,7 @@ $> yarn start
 - Reactotron
 - React Router DOM
 - React Toastify
-- AppContext
+- Context API
 - ESLint
 - Prettier
 - Styled Components
