@@ -50,7 +50,7 @@ jobs:
         with:
           images: jeln666/trend-api:v${{ github.run_number }}
           manifests:
-            forntend/k8s/deployment.yaml
+            backend/k8s/deployment.yaml
   CD2:
       needs: [CD1]
       runs-on: ubuntu-latest
