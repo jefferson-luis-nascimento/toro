@@ -1,0 +1,66 @@
+# Deployment do backend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: trend-api
+          image: jeln666/trend-api:v1
+          ports:
+            - containerPort: 5000
+---
+#Service do backend
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 5000
+  type: ClusterIP
+---
+#Deploy aplicação web
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: jeln666/trend-frontend:v1
+          ports:
+            - containerPort: 3000
+---
+#Service da aplicação
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30000
+  type: LoadBalancer
